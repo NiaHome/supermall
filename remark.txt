@@ -1,0 +1,32 @@
+1.安装vuex
+npm install vuex --save
+
+2.核心概念
+State，Getters，Mutation，Action，Module
+state单一状态树
+
+3.store的mutation名称建议使用常量
+
+4.项目结构
+
+5.网络请求axios
+安装npm install axios --save
+
+6.axios.spread将[res1,res2]解构为res1,res2
+
+7.axios全局配置
+axios.defaults.baseURL='http://localhost:8080'
+axios.defaults.timeout=5000
+
+get params:{id:2}
+post data:{key:'aa'}
+
+8。git仓库
+git clone https://github.com/NiaHome/supermall.git
+拷贝项目
+git status//查看状态
+git add .
+git commit -m '初始化项目'
+git push
+
+9.滚动插件better-scroll
