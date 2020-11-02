@@ -30,3 +30,9 @@ git commit -m '初始化项目'
 git push
 
 9.滚动插件better-scroll
+npm install better-scroll --save
+
+const bscroll = new BScroll(document.querySelector('.content'), {
+   probeType: 2
+ })
+probeType:0,1不侦测；2手指滚动时侦测，手指离开不侦测；3只要是滚动都侦测

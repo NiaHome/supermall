@@ -1,46 +1,60 @@
 <template>
 <div id="home">
   <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-  <home-swiper :banners="banners"/>
-  <home-recommend-view :recommends="recommends"/>
-  <feature-view/>
-  <tab-control class="tab-control" :titles="titles"
-      @tabClick="tabClick"/>
-  <goods-list :goods="showGoods"/>
-  <ul>
-    <li>item1</li>
-    <li>item1</li>
-    <li>item1</li>
-    <li>item1</li>
-    <li>item1</li>
-    <li>item1</li>
-    <li>item1</li>
-    <li>item1</li>
-    <li>item1</li>
-    <li>item1</li>
-    <li>item1</li>
-    <li>item1</li>
-    <li>item1</li>
-    <li>item1</li>
-    <li>item1</li>
-    <li>item1</li>
-    <li>item1</li>
-    <li>item1</li>
-    <li>item1</li>
-    <li>item1</li>
-    <li>item1</li>
-    <li>item1</li>
-    <li>item1</li>
-    <li>item1</li>
-    <li>item1</li>
-    <li>item1</li>
-    <li>item1</li>
-  </ul>
+  <div class="wrapper" ref="aaa">
+    <div>
+      <home-swiper :banners="banners"/>
+      <home-recommend-view :recommends="recommends"/>
+      <feature-view/>
+      <tab-control class="tab-control" :titles="titles"
+                   @tabClick="tabClick"/>
+      <goods-list :goods="showGoods"/>
+      <ul>
+        <li>分类1</li>
+        <li>分类2</li>
+        <li>分类3</li>
+        <li>分类4</li>
+        <li>分类5</li>
+        <li>分类6</li>
+        <li>分类7</li>
+        <li>分类8</li>
+        <li>分类9</li>
+        <li>分类10</li>
+        <li>分类11</li>
+        <li>分类12</li>
+        <li>分类13</li>
+        <li>分类14</li>
+        <li>分类15</li>
+        <li>分类16</li>
+        <li>分类17</li>
+        <li>分类18</li>
+        <li>分类19</li>
+        <li>分类20</li>
+        <li>分类21</li>
+        <li>分类22</li>
+        <li>分类23</li>
+        <li>分类24</li>
+        <li>分类25</li>
+        <li>分类26</li>
+        <li>分类27</li>
+        <li>分类28</li>
+        <li>分类29</li>
+        <li>分类30</li>
+        <li>分类31</li>
+        <li>分类32</li>
+        <li>分类33</li>
+        <li>分类34</li>
+      </ul>
+    </div>
+
+  </div>
 </div>
 </template>
 
 <script>
   import NavBar from 'components/common/navBar/NavBar'
+  // import Scroll from 'components/common/scroll/Scroll'
+
   import TabControl from 'components/content/tabControl/TabControl'
   import GoodsList from 'components/content/goods/GoodsList'
 
@@ -50,6 +64,7 @@
 
   import {getHomeMultiData,getHomeGoods} from "network/home";
 
+  import BScroll from 'better-scroll'
 
   export default {
     name: "Home",
@@ -60,9 +75,11 @@
       FeatureView,
       TabControl,
       GoodsList
+      // Scroll
     },
     data() {
       return {
+        scroll: null,
         banners: [],
         recommends: [],
         titles: ['流行', '新款', '精选'],
@@ -87,6 +104,21 @@
       this.getHomeGoods('pop');
       this.getHomeGoods('new');
       this.getHomeGoods('sell');
+    },
+    mounted() {
+      // console.log(this.$refs.aaa);
+      // console.log(document.querySelector('.wrapper'));
+      this.scroll = new BScroll(document.querySelector('.wrapper'),{
+        probeType: 3,
+        pullUpLoad: true,
+        click: true
+      })
+      this.scroll.on('scroll', (position) => {
+        // console.log(position);
+      })
+      this.scroll.on('pullingUp', () => {
+        console.log('上拉加载更多');
+      })
     },
     methods: {
       tabClick(index) {
@@ -122,6 +154,11 @@
 </script>
 
 <style scoped>
+  #home {
+    /*padding-top: 44px;*/
+    height: 100vh;
+  }
+
  .home-nav {
    background-color: var(--color-tint);
    color: white;
@@ -136,5 +173,11 @@
   .tab-control {
     position: sticky;
     top:44px;
+  }
+
+  .wrapper {
+    height: calc(100% - 93px);
+    overflow: hidden;
+    margin-top: 44px;
   }
 </style>
