@@ -2,52 +2,59 @@
 <div id="home">
   <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
   <div class="wrapper" ref="aaa">
-    <div>
+    <div class="content"  ref="scroll">
       <home-swiper :banners="banners"/>
       <home-recommend-view :recommends="recommends"/>
       <feature-view/>
       <tab-control class="tab-control" :titles="titles"
                    @tabClick="tabClick"/>
       <goods-list :goods="showGoods"/>
-      <ul>
-        <li>分类1</li>
-        <li>分类2</li>
-        <li>分类3</li>
-        <li>分类4</li>
-        <li>分类5</li>
-        <li>分类6</li>
-        <li>分类7</li>
-        <li>分类8</li>
-        <li>分类9</li>
-        <li>分类10</li>
-        <li>分类11</li>
-        <li>分类12</li>
-        <li>分类13</li>
-        <li>分类14</li>
-        <li>分类15</li>
-        <li>分类16</li>
-        <li>分类17</li>
-        <li>分类18</li>
-        <li>分类19</li>
-        <li>分类20</li>
-        <li>分类21</li>
-        <li>分类22</li>
-        <li>分类23</li>
-        <li>分类24</li>
-        <li>分类25</li>
-        <li>分类26</li>
-        <li>分类27</li>
-        <li>分类28</li>
-        <li>分类29</li>
-        <li>分类30</li>
-        <li>分类31</li>
-        <li>分类32</li>
-        <li>分类33</li>
-        <li>分类34</li>
-      </ul>
     </div>
-
   </div>
+
+  <back-top @click.native="backClick"/>
+  <!--<ul>-->
+    <!--<li>分类1</li>-->
+    <!--<li>分类2</li>-->
+    <!--<li>分类3</li>-->
+    <!--<li>分类4</li>-->
+    <!--<li>分类5</li>-->
+    <!--<li>分类6</li>-->
+    <!--<li>分类7</li>-->
+    <!--<li>分类8</li>-->
+    <!--<li>分类9</li>-->
+    <!--<li>分类10</li>-->
+    <!--<li>分类11</li>-->
+    <!--<li>分类12</li>-->
+    <!--<li>分类13</li>-->
+    <!--<li>分类14</li>-->
+    <!--<li>分类15</li>-->
+    <!--<li>分类16</li>-->
+    <!--<li>分类17</li>-->
+    <!--<li>分类18</li>-->
+    <!--<li>分类19</li>-->
+    <!--<li>分类20</li>-->
+    <!--<li>分类21</li>-->
+    <!--<li>分类22</li>-->
+    <!--<li>分类23</li>-->
+    <!--<li>分类24</li>-->
+    <!--<li>分类25</li>-->
+    <!--<li>分类26</li>-->
+    <!--<li>分类27</li>-->
+    <!--<li>分类28</li>-->
+    <!--<li>分类29</li>-->
+    <!--<li>分类30</li>-->
+    <!--<li>分类31</li>-->
+    <!--<li>分类32</li>-->
+    <!--<li>分类33</li>-->
+    <!--<li>分类34</li>-->
+    <!--<li>分类35</li>-->
+    <!--<li>分类36</li>-->
+    <!--<li>分类37</li>-->
+    <!--<li>分类38</li>-->
+    <!--<li>分类39</li>-->
+    <!--<li>分类40</li>-->
+  <!--</ul>-->
 </div>
 </template>
 
@@ -57,6 +64,7 @@
 
   import TabControl from 'components/content/tabControl/TabControl'
   import GoodsList from 'components/content/goods/GoodsList'
+  import BackTop from 'components/content/backTop/BackTop'
 
   import HomeSwiper from './childrenComponents/HomeSwiper'
   import HomeRecommendView from './childrenComponents/HomeRecommendView'
@@ -74,12 +82,14 @@
       HomeRecommendView,
       FeatureView,
       TabControl,
-      GoodsList
+      GoodsList,
+      BackTop
       // Scroll
     },
     data() {
       return {
         scroll: null,
+        msg: 'a',
         banners: [],
         recommends: [],
         titles: ['流行', '新款', '精选'],
@@ -121,6 +131,10 @@
       })
     },
     methods: {
+      backClick() {
+        // this.$refs.scroll.scroll.scrollTo(0, 0, 500)
+        this.scroll.scrollTo(0, 0, 500)
+      },
       tabClick(index) {
         switch (index) {
           case 0 :
