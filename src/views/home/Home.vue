@@ -2,7 +2,7 @@
 <div id="home">
   <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
   <div class="wrapper" ref="aaa">
-    <div class="content"  ref="scroll">
+    <div class="content"  ref="scroll" :probe-type="3">
       <home-swiper :banners="banners"/>
       <home-recommend-view :recommends="recommends"/>
       <feature-view/>
@@ -12,7 +12,7 @@
     </div>
   </div>
 
-  <back-top @click.native="backClick"/>
+  <back-top @click.native="backClick" v-show="isShowBackTop"/>
   <!--<ul>-->
     <!--<li>分类1</li>-->
     <!--<li>分类2</li>-->
@@ -88,8 +88,9 @@
     },
     data() {
       return {
+        isShowBackTop: false,
         scroll: null,
-        msg: 'a',
+        position: null,
         banners: [],
         recommends: [],
         titles: ['流行', '新款', '精选'],
@@ -116,15 +117,15 @@
       this.getHomeGoods('sell');
     },
     mounted() {
-      // console.log(this.$refs.aaa);
-      // console.log(document.querySelector('.wrapper'));
       this.scroll = new BScroll(document.querySelector('.wrapper'),{
         probeType: 3,
         pullUpLoad: true,
         click: true
       })
       this.scroll.on('scroll', (position) => {
-        // console.log(position);
+        console.log(position);
+        this.position = position;
+        this.isShowBackTop = -position.y > 50
       })
       this.scroll.on('pullingUp', () => {
         console.log('上拉加载更多');
