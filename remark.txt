@@ -36,3 +36,6 @@ const bscroll = new BScroll(document.querySelector('.content'), {
    probeType: 2
  })
 probeType:0,1不侦测；2手指滚动时侦测，手指离开不侦测；3只要是滚动都侦测
+
+10.防抖函数debounce/节流throttle
+

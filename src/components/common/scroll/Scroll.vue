@@ -17,6 +17,12 @@
         default() {
           return 0;
         }
+      },
+      pullUpLoad: {
+        type: Boolean,
+        default() {
+          return false;
+        }
       }
     },
     data() {
@@ -28,7 +34,7 @@
       //1.创建对象
       this.scroll = new BScroll(this.$refs.wrapper,{
         probeType: this.probeType,
-        pullUpLoad: true,
+        pullUpLoad: this.pullUpLoad,
         click: true
       })
 
@@ -37,15 +43,23 @@
         this.$emit('scroll', position)
       })
 
-      //3.监听上拉事件
-      this.scroll.on('pullingUp', () => {
-        console.log('上拉加载更多');
-      })
+      //3.监听滚动到底部
+      if (this.pullUpLoad) {
+        this.scroll.on('pullingUp', () => {
+          this.$emit('pullingUp')
+        })
+      }
     },
     methods: {
         scrollTo(x, y, time=300) {
-          this.scroll.scrollTo(x, y, time);
-        }
+          this.scroll && this.scroll.scrollTo && this.scroll.scrollTo(x, y, time);
+        },
+      finishPullUp() {
+          this.scroll.finishPullUp();
+      },
+      refresh() {
+        this.scroll && this.scroll.refresh();
+      }
     }
   }
 </script>

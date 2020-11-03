@@ -2,11 +2,11 @@
 <div id="home">
   <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
   <div class="wrapper" ref="aaa">
-    <div class="content"  ref="scroll" :probe-type="3">
-      <home-swiper :banners="banners"/>
+    <div class="content"  ref="scroll">
+      <home-swiper :banners="banners" @swiperItemLoad="swiperItemLoad"/>
       <home-recommend-view :recommends="recommends"/>
       <feature-view/>
-      <tab-control class="tab-control" :titles="titles"
+      <tab-control ref="tabControl" class="tab-control" :titles="titles"
                    @tabClick="tabClick"/>
       <goods-list :goods="showGoods"/>
     </div>
@@ -71,6 +71,7 @@
   import FeatureView from './childrenComponents/FeatureView'
 
   import {getHomeMultiData,getHomeGoods} from "network/home";
+  import {debounce} from "common/utils";
 
   import BScroll from 'better-scroll'
 
@@ -99,7 +100,8 @@
           'new': {page: 0, list: []},
           'sell': {page: 0, list: []},
         },
-        currentGoodsType: 'pop'
+        currentGoodsType: 'pop',
+        tabOffsetTop: 0
       }
     },
     computed: {
@@ -115,6 +117,7 @@
       this.getHomeGoods('pop');
       this.getHomeGoods('new');
       this.getHomeGoods('sell');
+
     },
     mounted() {
       this.scroll = new BScroll(document.querySelector('.wrapper'),{
@@ -123,12 +126,18 @@
         click: true
       })
       this.scroll.on('scroll', (position) => {
-        console.log(position);
+        // console.log(position);
         this.position = position;
-        this.isShowBackTop = -position.y > 50
+        this.isShowBackTop = -position.y > 200
       })
       this.scroll.on('pullingUp', () => {
-        console.log('上拉加载更多');
+        this.getHomeGoods(this.currentGoodsType)
+        this.scroll.refresh()
+      })
+
+
+      this.$bus.$on('itemImageLoad', () => {
+        debounce(this.scroll.refresh, 500)
       })
     },
     methods: {
@@ -159,10 +168,14 @@
       getHomeGoods(type) {
         const page = this.goods[type].page + 1;
         getHomeGoods(type, page).then(res => {
-          // console.log(res);
           this.goods[type].list.push(...res);
           this.goods[type].page += 1;
+
+          this.scroll.finishPullUp()
         })
+      },
+      swiperItemLoad() {
+        this.tabOffsetTop = this.$refs.tabControl.$el.offsetTop
       }
     }
   }
