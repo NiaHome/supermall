@@ -104,13 +104,21 @@
         },
         currentGoodsType: 'pop',
         tabOffsetTop: 0,
-        isTabFixed: false
+        isTabFixed: false,
+        saveY: 0
       }
     },
     computed: {
       showGoods() {
         return this.goods[this.currentGoodsType].list
       }
+    },
+    activated() {
+      this.scroll.scrollTo(0, this.saveY, 0)
+      this.scroll.refresh()
+    },
+    deactivated() {
+      this.saveY = this.scroll.y;
     },
     created() {
       //1.请求多个数据
