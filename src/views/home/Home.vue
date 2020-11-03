@@ -1,12 +1,14 @@
 <template>
 <div id="home">
   <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
+  <tab-control ref="tabControl" class="tab-control" :titles="titles"
+               @tabClick="tabClick" v-show="isTabFixed"/>
   <div class="wrapper" ref="aaa">
     <div class="content"  ref="scroll">
       <home-swiper :banners="banners" @swiperItemLoad="swiperItemLoad"/>
       <home-recommend-view :recommends="recommends"/>
       <feature-view/>
-      <tab-control ref="tabControl" class="tab-control" :titles="titles"
+      <tab-control ref="tabControl" :titles="titles"
                    @tabClick="tabClick"/>
       <goods-list :goods="showGoods"/>
     </div>
@@ -101,7 +103,8 @@
           'sell': {page: 0, list: []},
         },
         currentGoodsType: 'pop',
-        tabOffsetTop: 0
+        tabOffsetTop: 0,
+        isTabFixed: false
       }
     },
     computed: {
@@ -129,6 +132,9 @@
         // console.log(position);
         this.position = position;
         this.isShowBackTop = -position.y > 200
+
+        //决定tabcontrol是否吸顶
+        this.isTabFixed = (-position.y) > this.tabOffsetTop
       })
       this.scroll.on('pullingUp', () => {
         this.getHomeGoods(this.currentGoodsType)
@@ -191,11 +197,11 @@
    background-color: var(--color-tint);
    color: white;
 
-   position: fixed;
-   left: 0;
-   right:0;
-   top: 0;
-   z-index: 9;
+   /*position: fixed;*/
+   /*left: 0;*/
+   /*right:0;*/
+   /*top: 0;*/
+   /*z-index: 9;*/
  }
 
   .tab-control {
@@ -207,5 +213,10 @@
     height: calc(100% - 93px);
     overflow: hidden;
     margin-top: 44px;
+  }
+
+  .tab-control {
+    position: relative;
+    z-index: 9;
   }
 </style>
