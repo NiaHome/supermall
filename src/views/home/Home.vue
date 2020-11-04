@@ -1,7 +1,7 @@
 <template>
 <div id="home">
   <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-  <tab-control ref="tabControl" class="tab-control" :titles="titles"
+  <tab-control ref="topTabControl" class="tab-control" :titles="titles"
                @tabClick="tabClick" v-show="isTabFixed"/>
   <div class="wrapper" ref="aaa">
     <div class="content"  ref="scroll">
@@ -105,7 +105,8 @@
         currentGoodsType: 'pop',
         tabOffsetTop: 0,
         isTabFixed: false,
-        saveY: 0
+        saveY: 0,
+        itemImgListener: null
       }
     },
     computed: {
@@ -118,7 +119,11 @@
       this.scroll.refresh()
     },
     deactivated() {
+      //保存Y值
       this.saveY = this.scroll.y;
+
+      //取消全局事件的监听
+      this.$bus.$off('itemImgLoad', this.itemImgListener)
     },
     created() {
       //1.请求多个数据
@@ -137,7 +142,6 @@
         click: true
       })
       this.scroll.on('scroll', (position) => {
-        // console.log(position);
         this.position = position;
         this.isShowBackTop = -position.y > 200
 
@@ -149,7 +153,10 @@
         this.scroll.refresh()
       })
 
-
+      let newRefresh = debounce(this.scroll.refresh, 100)
+      this.itemImgListener = () => {
+        newRefresh(20, 30, 'abc')
+      }
       this.$bus.$on('itemImageLoad', () => {
         debounce(this.scroll.refresh, 500)
       })
@@ -171,7 +178,10 @@
             this.currentGoodsType = 'sell';
             break;
         }
-        console.log(this.currentGoodsType);
+        if (this.$refs.topTabControl != undefined) {
+          this.$refs.topTabControl.currentIndex = index;
+        }
+        this.$refs.tabControl.currentIndex = index;
       },
       getHomeMultiData() {
         getHomeMultiData().then(res => {
